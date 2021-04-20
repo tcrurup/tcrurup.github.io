@@ -1,6 +1,12 @@
 const baseUrl = "http://tcrurup.github.io/index"
 
 document.addEventListener("DOMContentLoaded", event => {
-    console.log("DOM Loaded");
-    console.log(window.location);
+    OnDOMLoad();
 })
+
+function OnDOMLoad(){
+    if(window.location.hostname != ""){
+        document.getElementById("base-url").href = baseUrl;
+        console.log("DOM Loaded");
+    };
+}
