@@ -29,6 +29,12 @@ body{
 }
 
 .page p{
-    width: 80%;
+    width: 90%;
     margin: 10px auto 0px;
+}
+
+.page .page-title{
+    font-size: 50px;
+    text-align: center;
+    display: block;
 }

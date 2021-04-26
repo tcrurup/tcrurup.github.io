@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 const baseUrl = "http://tcrurup.github.io/index"
 document.addEventListener("DOMContentLoaded", event => {
     OnDOMLoad();
@@ -6,6 +8,8 @@ document.addEventListener("DOMContentLoaded", event => {
 function OnDOMLoad(){
     if(window.location.hostname != ""){
         document.getElementById("base-url").href = baseUrl;
-        console.log("DOM Loaded");
+        $.get("partials/navbar.html", function(response){
+            $( "#header" ).html(response)
+        });        
     };
 }
