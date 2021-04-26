@@ -1,9 +1,34 @@
+body{
+    margin: 0px;
+}
+
+.container{
+    width: 100%;
+    height: 1080px;
+}
+
 .page{
     width: 80%;
+    min-height: 800px;
+    height: 100%;
+    border: 2px solid rgb(133, 125, 125);
+    border-radius: 5px;
+    margin: 10px auto 0px;
 }
 
 .nav-bar{
     width: 100%;
-    height: 100px;
-    color: blue;
+    height: 50px;
+    background-color: blue;
+}
+
+.blog-post .blog-title{
+    font-size: 28px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.page p{
+    width: 80%;
+    margin: 10px auto 0px;
 }
