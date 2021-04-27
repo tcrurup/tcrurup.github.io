@@ -1,15 +1,8 @@
-class Navbar{
+class Navbar extends Component{
 
-    constructor(){
-        console.log("Navbar constructed");
-        $("Navbar").html(this.render());
-    }
-
-    render(){
-
-        return `<div> 
-            This is the navbar
+    render(){   
+        return `<div class='nav-bar'> 
+         
         </div>`
     }
-
 }

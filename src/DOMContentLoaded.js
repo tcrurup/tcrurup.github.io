@@ -8,9 +8,9 @@ function OnDOMLoad(){
     if(window.location.hostname != ""){
         document.getElementById("base-url").href = baseUrl;      
     };
+    generateComponents();
+}
 
-    console.log("getting header")
-    $(document).ready(
-        $('#navbar').html('partials/navbar.html')
-    );
+function generateComponents(){
+    Navbar.initialize();
 }
