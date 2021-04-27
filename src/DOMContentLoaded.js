@@ -11,6 +11,6 @@ function OnDOMLoad(){
 
     console.log("getting header")
     $(document).ready(
-        $( "#navbar" ).load('../partials/navbar.html', () => {console.log('loaded')})
+        $('#navbar').html('partials/navbar.html')
     );
 }
