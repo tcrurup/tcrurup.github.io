@@ -5,12 +5,32 @@ document.addEventListener("DOMContentLoaded", event => {
 })
 
 function OnDOMLoad(){
-    if(window.location.hostname != ""){
-        document.getElementById("base-url").href = baseUrl;      
-    };
-    generateComponents();
+    loadPartials();
 }
 
-function generateComponents(){
-    Navbar.initialize();
+function loadPartials(){
+    
+    let allIncludes = $( "div[include-html]");
+
+    for(let i = 0; i< allIncludes.length; i++){
+        
+        let node = allIncludes[i]
+        let filePath = node.getAttribute("include-html")
+        console.log(`Loading partial from ${filePath}`)
+        const onSuccess = response => {
+            console.log(`Found partial ${filePath}`)
+            console.log(response)
+            node.innerHTML = response
+        }
+        
+        fetchPartial(filePath, onSuccess)
+    }
+}
+
+function fetchPartial(filePath, onSuccess){
+    $.ajax({
+        url:'/partials/navbar.html',
+        success: response => onSuccess(response),
+        error: error => console.log(error)
+    })
 }

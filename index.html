@@ -4,12 +4,11 @@
 
 <head>
     <!-- http://tcrurup.github.io/ unless its testing-->
-    <base id="base-url" href="" target="_blank">
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <Navbar></Navbar>
+    <div include-html="partials/navbar.html"></div>
     <div class="page">
         <blogpost>
             <div class="page-title">Welcome!</div>
@@ -23,6 +22,9 @@
             <p></p>
         </blogpost>   
     </div>
+
+    <div include-html="partials/footer.html"></div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="./src/components/Component.js" ></script>
     <script type="text/javascript" src="./src/components/Navbar.js" ></script>
