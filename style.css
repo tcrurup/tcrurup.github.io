@@ -1,3 +1,13 @@
+
+code{
+    display: inline-block;
+    white-space: pre-wrap;
+    margin: auto;
+}
+
+code text{
+}
+
 body{
     margin: 0px;
 }
@@ -13,13 +23,20 @@ body{
     height: 100%;
     border: 2px solid rgb(133, 125, 125);
     border-radius: 5px;
-    margin: 10px auto 0px;
+    padding: 10px;
+    margin: 25px auto;
 }
 
 .nav-bar{
     width: 100%;
     height: 50px;
-    background-color: blue;
+    background-color: rgb(47, 47, 194);
+}
+
+.footer{
+    height: 75px;
+    width: 100%;
+    background-color: rgb(47, 47, 194);
 }
 
 .blog-post .blog-title{

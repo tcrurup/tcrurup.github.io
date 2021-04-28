@@ -16,10 +16,7 @@ function loadPartials(){
         
         let node = allIncludes[i]
         let filePath = node.getAttribute("include-html")
-        console.log(`Loading partial from ${filePath}`)
         const onSuccess = response => {
-            console.log(`Found partial ${filePath}`)
-            console.log(response)
             node.innerHTML = response
         }
         
@@ -29,7 +26,7 @@ function loadPartials(){
 
 function fetchPartial(filePath, onSuccess){
     $.ajax({
-        url:'/partials/navbar.html',
+        url: filePath,
         success: response => onSuccess(response),
         error: error => console.log(error)
     })
