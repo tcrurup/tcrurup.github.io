@@ -1,11 +1,29 @@
 
 code{
-    display: inline-block;
     white-space: pre-wrap;
+    min-width: fit-content;
+    overflow: hidden;
+}
+
+div.code-notation{
+    border: 2px solid black;
+    width: fit-content;
+    padding: 10px;
     margin: auto;
 }
 
-code text{
+div.code-notation ul{
+    min-width: 33%;
+}
+
+div.code-notation span{
+    display: inline;
+    width: auto;
+    height: fit-content;
+}
+
+div.code-notation code span.highlighted{
+    background-color: yellow;
 }
 
 body{
