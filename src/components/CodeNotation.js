@@ -1,6 +1,6 @@
 import Utilities from '../Utilities.js'
 
-class CodeNotation{
+export default class CodeNotation{
     
     constructor(node){
         this.properties = {
@@ -69,7 +69,6 @@ class CodeNotation{
             
             decreaseIndent ? indents-- : null
             for(let i=0; i< indents; i++){ string = "    " + string }
-            console.log(indents)
             increaseIndent ? indents++ : null
             
             return string;            
@@ -79,10 +78,10 @@ class CodeNotation{
     }
 }
 
-document.addEventListener("DOMContentLoaded", event => {
+/*document.addEventListener("DOMContentLoaded", event => {
     let allNodes = document.querySelectorAll("div.code-notation")
     for(let i=0; i < allNodes.length; i++){
         new CodeNotation(allNodes[i]);
     }
-})
+})*/
 

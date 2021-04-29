@@ -1,31 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="/style.css">
-    <base href="../../../../../">
-</head>
-<body>
+<div class="page-title">Organization and Navigation</div>
+    <p>
+        I am quickly realizing that I need a better way to organize and navigate this website.  Since I only have a few pages I can navigate manually through
+        the URL and copy paste the HTML template for new pages.  I need a better way since I plan on expanding this to hundreds of pages.  The first thing I want to 
+        do is turn come of my code into a module.  Currently, I am importing every script I need manually which can be problomatic.  For example, I have a Utilities 
+        class that does a basic function, like capitalizing a word.  If I import a script that uses that class, I've needed to include another script tag in my HTML
+        to grab that Utilities script.
+
+        Instead I make my scripts modular and import Utilites directly from the javascript files that need them.  This means when I can grab a script with one tag and 
+        it will also grab it's dependencies.  All that needs to be done is to change the script type to "module" and then add the import and export in the appropriate js functions.
+
+        Next I will create a class that is going to serve as a controller for the blog page.  Also abstractint load partials into page.
+    </p>
+</div>
+
+<script type="module" src="/src/components/BlogPage.js" ></script>
+
+
+
+
+
     
-    <div include-html="partials/navbar.html"></div>
-    <div class="page">
-        <div class="page-title">Organization and Navigation</div>
-        <p>
-            I am quickly realizing that I need a better way to organize and navigate this website.  Since I only have a few pages I can navigate manually through
-            the URL and copy paste the HTML template for new pages.  I need a better way since I plan on expanding this to hundreds of pages.  The first thing I want to 
-            do is turn come of my code into a module.  Currently, I am importing every script I need manually which can be problomatic.  For example, I have a Utilities 
-            class that does a basic function, like capitalizing a word.  If I import a script that uses that class, I've needed to include another script tag in my HTML
-            to grab that Utilities script.
-
-            Instead I make my scripts modular and import Utilites directly from the javascript files that need them.  This means when I can grab a script with one tag and 
-            it will also grab it's dependencies.  All that needs to be done is to change the script type to "module" and then add the import and export in the appropriate js functions.
-
-            Next I will create a class that is going to serve as a controller for the blog page.  Also abstractint load partials into page.
-        </p>
-    </div>
-
-    <div include-html="partials/footer.html"></div>
-
-    <script type="module" src="/src/components/BlogPage.js" ></script>
-    <script type="module" src="/src/components/CodeNotation.js" ></script>
-</body>
-</html>

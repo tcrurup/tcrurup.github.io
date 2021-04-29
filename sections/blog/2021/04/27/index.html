@@ -1,33 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="/style.css">
-    <base href="../../../../../">
-</head>
-<body>
-    
-    <div include-html="partials/navbar.html"></div>
-    <div class="page">
-        <div class="page-title">Code Display</div>
-        4/27/2021
-        <p>I will be building this website everyday so what you at some point may already be seeing what I am typing about here implemented.  One of the first things I wanted to do
-        was find a way to break my html up.  I know there are frameworks out there already that allow this functionality but I wanted to see if I could come up with a solution using
-        some base Javascript.
 
-        This first step in my solution, which was influenced heavily by the W3 solution <a href=""> here </a>, is put a div element where I want to insert an html file with the 
-        attribute "include-html" and a value that represents the filepath to said HTML file.  Then I want to do the following.
-        <ul>
-            <li>Use Javascript to get all div elements with "include-html" attribute</li>
-            <li>Cycle through each element and create a fetch request for the "include-html" values</li>
-            <li>On fetch success, insert that html into the node</li>
-        </ul>
+<div class="page-title">Code Display</div>
+4/27/2021
+<p>
+    I will be building this website everyday so what you at some point may already be seeing what I am typing about here implemented.  One of the first things I wanted to do
+    was find a way to break my html up.  I know there are frameworks out there already that allow this functionality but I wanted to see if I could come up with a solution using
+    some base Javascript.
 
-        This is the baseline for what I want it to do and the solution with JQuery is pretty simple.
+    This first step in my solution, which was influenced heavily by the W3 solution <a href=""> here </a>, is put a div element where I want to insert an html file with the 
+    attribute "include-html" and a value that represents the filepath to said HTML file.  Then I want to do the following.
+<ul>
+    <li>Use Javascript to get all div elements with "include-html" attribute</li>
+    <li>Cycle through each element and create a fetch request for the "include-html" values</li>
+    <li>On fetch success, insert that html into the node</li>
+</ul>
 
-        <code>$( "div[include-html]")</code> - This grabs all the div elements with the include-html attribute
-        
-        Next we can use a for loop to iterate through each elements
-        </p>
+    This is the baseline for what I want it to do and the solution with JQuery is pretty simple.
+
+    <code>$( "div[include-html]")</code> - This grabs all the div elements with the include-html attribute
+
+    Next we can use a for loop to iterate through each elements
+</p>
+
+<div class='code-notation'>
+    <div class='code-notation-content'>
         <code>
             for(let i = 0; i< allIncludes.length; i++){
 
@@ -48,23 +43,24 @@
             </li>
             <li> Now we fetch!</li>
         </ul>
-        <code>
-            function fetchPartial(filePath, onSuccess){
-                $.ajax({
-                    url: filePatch,
-                    success: response => onSuccess(response),
-                    error: error => console.log(error)
-                })
-            }
-        </code>
-        <p>While building I can now have HTML components that I can enter anywhere using <code>&ltdiv include-html="filepath/here"&gt</code> which will first be used for 
-        navigationg bar and the footer</p>
     </div>
+</div>
 
-    <div include-html="partials/footer.html"></div>
+<code>
+    function fetchPartial(filePath, onSuccess){
+        $.ajax({
+            url: filePatch,
+            success: response => onSuccess(response),
+            error: error => console.log(error)
+        })
+    }
+</code>
+<p>
+    While building I can now have HTML components that I can enter anywhere using <code>&ltdiv include-html="filepath/here"&gt</code> which will first be used for 
+    navigationg bar and the footer
+</p>
 
-    <script type="text/javascript" src="/src/DOMContentLoaded.js" ></script>
-    <script type="text/javascript" src="/src/Utilities.js" ></script>
-    <script type="text/javascript" src="/src/components/CodeNotation.js" ></script>
-</body>
-</html>
+<script type="module" src="/src/components/BlogPage.js" ></script>
+
+
+    
