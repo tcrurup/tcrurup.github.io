@@ -1,38 +1,23 @@
-document.addEventListener("DOMContentLoaded", event => {
-    let allNodes = document.querySelectorAll("div.code-notation")
-    for(let i=0; i < allNodes.length; i++){
-        const node = allNodes[i];
-
-        const title = (node.getAttribute('name') || "No name given").split('-').map(n => Utilities.capitalize(n)).join(" ");
-        const titleElement = document.createElement('div')
-        titleElement.innerHTML = title
-        titleElement.className="code-notation-title"
-        node.prepend(titleElement);
-        const code = node.querySelector("code")
-        const notationUL = node.querySelector("ul")
-        
-        const sanitizedCode = sanitizeCode(code.innerHTML)
-        
-        
-        code.innerHTML = sanitizedCode
-        
-        //Add event on mouse over to change span class in code
-        
-        if(notationUL){
-            console.log('adding events')
-            const listItems = notationUL.querySelectorAll('li')
-            console.log(listItems[0])
+class CodeNotation{
+    
+    constructor(node){
+        this.properties = {
+            node: node
+        }
+        Object.freeze(this.properties)
+        this.prependTitleToElement()
+        this.codeElement.innerHTML = CodeNotation.sanitizeCode(this.codeElement.innerHTML)
+        if(this.notationElement){
+            const listItems = this.notationElement.querySelectorAll('li')
             
             for(let i = 0; i < listItems.length; i++){
-                
-                const allSpans = code.querySelectorAll(`span[list-item='${i+1}']`)
+                const allSpans = this.codeElement.querySelectorAll(`span[list-item='${i+1}']`)
                 listItems[i].addEventListener("mouseover", event => {
                     
                     for(let i = 0; i < allSpans.length; i++){
                         allSpans[i].className = "highlighted"
                     }
                 })
-
                 listItems[i].addEventListener("mouseout", () => {
                     for(let i = 0; i < allSpans.length; i++){
                         allSpans[i].className = ""
@@ -41,11 +26,9 @@ document.addEventListener("DOMContentLoaded", event => {
             }
 
         }
-
-        
     }
 
-    function sanitizeCode(innerHTML){
+    static sanitizeCode(innerHTML){
         const splitString = innerHTML.split(/\n/g);
         const cleanedStrings = splitString.map(line => line.trim()).filter(line=> line != "");
         const indentPlusCharacters = ['{']
@@ -75,4 +58,27 @@ document.addEventListener("DOMContentLoaded", event => {
         sanitizedStrings.unshift('')
         return sanitizedStrings.join('\n')
     }
+    
+    prependTitleToElement(){
+        const titleElement = document.createElement('div')
+        titleElement.innerHTML = this.title
+        titleElement.className="code-notation-title"
+        this.node.prepend(titleElement);
+    }
+
+    get codeElement(){ return this.node.querySelector('code')}
+    get notationElement(){ return this.node.querySelector('ul')}
+    get node(){ return this.properties.node }
+    get title(){
+        const title = this.node.getAttribute('name') || "No name provided"
+        return title.split('-').map(n => Utilities.capitalize(n)).join(" ");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", event => {
+    let allNodes = document.querySelectorAll("div.code-notation")
+    for(let i=0; i < allNodes.length; i++){
+        new CodeNotation(allNodes[i]);
+    }
 })
+
