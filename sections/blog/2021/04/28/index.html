@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <base href="../../../../../">
+</head>
+<body>
+    <div include-html="partials/navbar.html"></div>
+    <div class="page">
+        <div class="page-title">Code Display</div>
+        4/28/2021
+        <p>Something that I have realized I want to do is create a better code display that shows a better display for code and the details that go with it.  Currently, I am just
+            using the standard code tag with the css styling <code>white-space: pre-wrap;</code> to preserve the whitespace.  The problem is that it preserves the entirety of the 
+            whitespace in my HTML file which is way to much so I either have to live with it or remove the indents in the HTML which is ugly and I don't want to do.  I've decided
+            to start by writing a funtion to sanitize the HTML between the code tags which will also add the appropriate indents. These will be defined be a div element with the 
+            class 'code-notation'.  Inside of this node will be a %ltcode%gt and a %ltul%gt tag. 
+        </p>
+
+        <p>
+            The first step is to gather all of the div elements on the page with the class code-notation.  Then we will get the text that is inside %ltcode%gt and send it to a custom
+            function to sanitize the text.  After the sanitation we will then replace the starting HTML with the sanitized version.
+        </p>
+
+        <div class='code-notation' name='initial-code'>
+            <div class='code-notation-content'>
+                <code>
+                    document.addEventListener("DOMContentLoaded", event => {
+                        let allNodes = document.querySelectorAll("div.code-notation")
+                        for(let i=0; i < allNodes.length; i++){
+                            const node = allNodes[i];
+                            const code = node.querySelector("code")
+                            const sanitizedCode = sanitizeCode(code.innerHTML)
+                            code.innerHTML = sanitizedCode
+                        }
+                </code>
+            </div>
+        </div>
+
+        <p>
+            I'm going with a pretty basic function to eliminate the whitespace in my code while also indenting appropriately.  
+        </p>
+
+        <div class='code-notation' name='sanitizing-the-code'>
+            <div class='code-notation-content'>
+                <code>
+                    function sanitizeCode(innerHTML){
+                        <span list-item=1>const splitString = innerHTML.split(/\n/g);</span>
+                        <span list-item=2>const cleanedStrings = splitString.map(line => line.trim()).filter(line=> line != "");</span>
+                        const indentPlusCharacters = ['{']
+                        const indentMinusCharacters = ['}']
+                        let indents = 0;
+                        let increaseIndent, decreaseIndent
+                
+                        let sanitizedStrings = cleanedStrings.map(string => {
+                            
+                            const finalChar = string.slice(-1);
+                            const firstChar = string.slice(0, 1);
+                
+                            <span list-item=3>increaseIndent = indentPlusCharacters.includes(finalChar);</span>
+                            <span list-item=4>decreaseIndent = indentMinusCharacters.includes(firstChar) || indentMinusCharacters.includes(finalChar);</span>
+                
+                            <span list-item=5>decreaseIndent ? indents-- : null</span>
+                            for(let i=0; i< indents; i++){ 
+                                string = "  " + string 
+                            }
+                            increaseIndent ? indents++ : null</span>
+                            return string;            
+                        })
+                        <span list-item=6>return sanitizedStrings.join('\n')</span>
+                    }
+                </code>
+                <ul>
+                    <li>First we split the string on wherever we find a new line break</li>
+                    <li>Next we take the array of strings and trim the whitespace while also filtering out blank lines</li>
+                    <li>If the final character of the string is a "{" then increase indent</li>
+                    <li>If the final of first character of the string is a "}" then decrease indent</li>
+                    <li>If the if indent decreases do so before adding string otherwise increase indent after </li>
+                    <li>Rejoin the sanitized and spaced lines with a new line character</li>
+                </ul>
+            </div>
+        </div>
+        <p>
+            Finally, it would be nice to add some functionality where I can associate the notes in the list with code.  The easiest way would be to implement a tag in the code 
+            section that will identify the list index that it is associated with.  We can then add an even to handle mouse over and mouse exit to change that class of the span
+            to show highlighting.  
+        </p>
+
+        <div class='code-notation' name='adding-the-event-listeners'>
+            <div class='code-notation-content'>
+                <code>
+                    <span list-item=1>if(notationUL)</span>{
+                        console.log('adding events')
+                        const listItems = notationUL.querySelectorAll('li')
+                        console.log(listItems[0])
+                        
+                        for(let i = 0; i < listItems.length; i++){
+                            
+                            <span list-item=2>const allSpans = code.querySelectorAll(`span[list-item='${i+1}']`)</span>
+                            <span list-item=3>listItems[i].addEventListener("mouseover", event => {
+                                
+                                for(let i = 0; i < allSpans.length; i++){
+                                    allSpans[i].className = "highlighted"
+                                }
+                            })
+            
+                            listItems[i].addEventListener("mouseout", () => {
+                                for(let i = 0; i < allSpans.length; i++){
+                                    allSpans[i].className = ""
+                                }
+                            })</span>
+                        }
+                    }
+                </code>
+                <ul>
+                    <li>Check for notations, some examples may not have them</li>
+                    <li>Get all the spans in the code section that correlate with the list index</li>
+                    <li>Add mouse events to each list item and pass all the associated span elements</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div include-html="partials/footer.html"></div>
+
+    <script type="text/javascript" src="/src/DOMContentLoaded.js" ></script>
+    <script type="text/javascript" src="/src/Utilities.js" ></script>
+    <script type="text/javascript" src="/src/components/CodeNotation.js" ></script>
+</body>
+</html>

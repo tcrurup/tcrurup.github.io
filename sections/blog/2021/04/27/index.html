@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <base href="../../../../../">
+</head>
+<body>
+    
+    <div include-html="partials/navbar.html"></div>
+    <div class="page">
+        <div class="page-title">Code Display</div>
+        4/27/2021
+        <p>I will be building this website everyday so what you at some point may already be seeing what I am typing about here implemented.  One of the first things I wanted to do
+        was find a way to break my html up.  I know there are frameworks out there already that allow this functionality but I wanted to see if I could come up with a solution using
+        some base Javascript.
+
+        This first step in my solution, which was influenced heavily by the W3 solution <a href=""> here </a>, is put a div element where I want to insert an html file with the 
+        attribute "include-html" and a value that represents the filepath to said HTML file.  Then I want to do the following.
+        <ul>
+            <li>Use Javascript to get all div elements with "include-html" attribute</li>
+            <li>Cycle through each element and create a fetch request for the "include-html" values</li>
+            <li>On fetch success, insert that html into the node</li>
+        </ul>
+
+        This is the baseline for what I want it to do and the solution with JQuery is pretty simple.
+
+        <code>$( "div[include-html]")</code> - This grabs all the div elements with the include-html attribute
+        
+        Next we can use a for loop to iterate through each elements
+        </p>
+        <code>
+            for(let i = 0; i< allIncludes.length; i++){
+
+                let node = allIncludes[i]
+                let filePath = node.getAttribute("include-html")
+                const onSuccess = response => {
+                    node.innerHTML = response
+                }         
+                fetchPartial(filePath, onSuccess)
+            }
+        </code>
+        <ul>
+            <li>We grab the dom node that is the placeholder where the HTML will be inserted in <code>node</code></li>
+            <li>Next we get the attribute from the node that will contain the filepath< and stre it in <code>filepath</code>/li>
+            <li>
+                Then we define the onSuccess function which is what will be invoked once the HTML is retrevied.  This is where we take the node and insert
+                the HTML we retreived from the fetch.
+            </li>
+            <li> Now we fetch!</li>
+        </ul>
+        <code>
+            function fetchPartial(filePath, onSuccess){
+                $.ajax({
+                    url: filePatch,
+                    success: response => onSuccess(response),
+                    error: error => console.log(error)
+                })
+            }
+        </code>
+        <p>While building I can now have HTML components that I can enter anywhere using <code>&ltdiv include-html="filepath/here"&gt</code> which will first be used for 
+        navigationg bar and the footer</p>
+    </div>
+
+    <div include-html="partials/footer.html"></div>
+
+    <script type="text/javascript" src="/src/DOMContentLoaded.js" ></script>
+    <script type="text/javascript" src="/src/Utilities.js" ></script>
+    <script type="text/javascript" src="/src/components/CodeNotation.js" ></script>
+</body>
+</html>

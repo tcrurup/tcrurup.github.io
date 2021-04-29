@@ -10,7 +10,7 @@ function OnDOMLoad(){
 
 function loadPartials(){
     
-    let allIncludes = $( "div[include-html]");
+    let allIncludes = document.querySelectorAll("div[include-html]");
 
     for(let i = 0; i< allIncludes.length; i++){
         
@@ -25,9 +25,7 @@ function loadPartials(){
 }
 
 function fetchPartial(filePath, onSuccess){
-    $.ajax({
-        url: filePath,
-        success: response => onSuccess(response),
-        error: error => console.log(error)
-    })
+    fetch(filePath)
+    .then(response => response.text())
+    .then(html => onSuccess(html)) 
 }
