@@ -1,19 +1,32 @@
 
 code{
     white-space: pre-wrap;
-    min-width: fit-content;
+    display: inline;
     overflow: hidden;
+    margin: 20px;
 }
 
 div.code-notation{
     border: 2px solid black;
     width: fit-content;
-    padding: 10px;
-    margin: auto;
+    margin: 20px auto;
 }
 
 div.code-notation ul{
     min-width: 33%;
+}
+
+div.code-notation div.code-notation-title{
+    display: block;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: green;
+
+}
+
+div.code-notation div.code-notation-content{
+    padding: 20px;
 }
 
 div.code-notation span{
@@ -24,6 +37,9 @@ div.code-notation span{
 
 div.code-notation code span.highlighted{
     background-color: yellow;
+    padding: 4px 0px;
+    font-weight: bold;
+
 }
 
 body{

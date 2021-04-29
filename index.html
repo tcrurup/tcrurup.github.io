@@ -87,19 +87,21 @@
                 function to sanitize the text.  After the sanitation we will then replace the starting HTML with the sanitized version.
             </p>
 
-            <div class='code-notation'>
-                <code>
-                    document.addEventListener("DOMContentLoaded", event => {
-                        let allNodes = document.querySelectorAll("div.code-notation")
-                        for(let i=0; i < allNodes.length; i++){
-                            const node = allNodes[i];
-                            const code = node.querySelector("code")
-                            const sanitizedCode = sanitizeCode(code.innerHTML)
-                            code.innerHTML = sanitizedCode
-                    
-                            
-                        }
-                </code>
+            <div class='code-notation' name='initial-code'>
+                <div class='code-notation-content'>
+                    <code>
+                        document.addEventListener("DOMContentLoaded", event => {
+                            let allNodes = document.querySelectorAll("div.code-notation")
+                            for(let i=0; i < allNodes.length; i++){
+                                const node = allNodes[i];
+                                const code = node.querySelector("code")
+                                const sanitizedCode = sanitizeCode(code.innerHTML)
+                                code.innerHTML = sanitizedCode
+                        
+                                
+                            }
+                    </code>
+                </div>
             </div>
 
             <p>
@@ -107,41 +109,43 @@
             </p>
 
             <div class='code-notation'>
-                <code>
-                    function sanitizeCode(innerHTML){
-                        <span list-item=1>const splitString = innerHTML.split(/\n/g);</span>
-                        <span list-item=2>const cleanedStrings = splitString.map(line => line.trim()).filter(line=> line != "");</span>
-                        const indentPlusCharacters = ['{']
-                        const indentMinusCharacters = ['}']
-                        let indents = 0;
-                        let increaseIndent, decreaseIndent
-                
-                        let sanitizedStrings = cleanedStrings.map(string => {
-                            
-                            const finalChar = string.slice(-1);
-                            const firstChar = string.slice(0, 1);
-                
-                            <span list-item=3>increaseIndent = indentPlusCharacters.includes(finalChar);</span>
-                            <span list-item=4>decreaseIndent = indentMinusCharacters.includes(firstChar) || indentMinusCharacters.includes(finalChar);</span>
-                
-                            <span list-item=5>decreaseIndent ? indents-- : null</span>
-                            for(let i=0; i< indents; i++){ 
-                                string = "  " + string 
-                            }
-                            increaseIndent ? indents++ : null</span>
-                            return string;            
-                        })
-                        <span list-item=6>return sanitizedStrings.join('\n')</span>
-                    }
-                </code>
-                <ul>
-                    <li>First we split the string on wherever we find a new line break</li>
-                    <li>Next we take the array of strings and trim the whitespace while also filtering out blank lines</li>
-                    <li>If the final character of the string is a "{" then increase indent</li>
-                    <li>If the final of first character of the string is a "}" then decrease indent</li>
-                    <li>If the if indent decreases do so before adding string otherwise increase indent after </li>
-                    <li>Rejoin the sanitized and spaced lines with a new line character</li>
-                </ul>
+                <div class='code-notation-content'>
+                    <code>
+                        function sanitizeCode(innerHTML){
+                            <span list-item=1>const splitString = innerHTML.split(/\n/g);</span>
+                            <span list-item=2>const cleanedStrings = splitString.map(line => line.trim()).filter(line=> line != "");</span>
+                            const indentPlusCharacters = ['{']
+                            const indentMinusCharacters = ['}']
+                            let indents = 0;
+                            let increaseIndent, decreaseIndent
+                    
+                            let sanitizedStrings = cleanedStrings.map(string => {
+                                
+                                const finalChar = string.slice(-1);
+                                const firstChar = string.slice(0, 1);
+                    
+                                <span list-item=3>increaseIndent = indentPlusCharacters.includes(finalChar);</span>
+                                <span list-item=4>decreaseIndent = indentMinusCharacters.includes(firstChar) || indentMinusCharacters.includes(finalChar);</span>
+                    
+                                <span list-item=5>decreaseIndent ? indents-- : null</span>
+                                for(let i=0; i< indents; i++){ 
+                                    string = "  " + string 
+                                }
+                                increaseIndent ? indents++ : null</span>
+                                return string;            
+                            })
+                            <span list-item=6>return sanitizedStrings.join('\n')</span>
+                        }
+                    </code>
+                    <ul>
+                        <li>First we split the string on wherever we find a new line break</li>
+                        <li>Next we take the array of strings and trim the whitespace while also filtering out blank lines</li>
+                        <li>If the final character of the string is a "{" then increase indent</li>
+                        <li>If the final of first character of the string is a "}" then decrease indent</li>
+                        <li>If the if indent decreases do so before adding string otherwise increase indent after </li>
+                        <li>Rejoin the sanitized and spaced lines with a new line character</li>
+                    </ul>
+                </div>
             </div>
             <p>
                 Finally, it would be nice to add some functionality where I can associate the notes in the list with code.  The easiest way would be to implement a tag in the code 
@@ -150,36 +154,37 @@
             </p>
 
             <div class='code-notation'>
-                <code>
-                    <span list-item=1>if(notationUL)</span>{
-                        console.log('adding events')
-                        const listItems = notationUL.querySelectorAll('li')
-                        console.log(listItems[0])
-                        
-                        for(let i = 0; i < listItems.length; i++){
+                <div class='code-notation-content'>
+                    <code>
+                        <span list-item=1>if(notationUL)</span>{
+                            console.log('adding events')
+                            const listItems = notationUL.querySelectorAll('li')
+                            console.log(listItems[0])
                             
-                            <span list-item=2>const allSpans = code.querySelectorAll(`span[list-item='${i+1}']`)</span>
-                            <span list-item=3>listItems[i].addEventListener("mouseover", event => {
+                            for(let i = 0; i < listItems.length; i++){
                                 
-                                for(let i = 0; i < allSpans.length; i++){
-                                    allSpans[i].className = "highlighted"
-                                }
-                            })
-            
-                            listItems[i].addEventListener("mouseout", () => {
-                                for(let i = 0; i < allSpans.length; i++){
-                                    allSpans[i].className = ""
-                                }
-                            })</span>
+                                <span list-item=2>const allSpans = code.querySelectorAll(`span[list-item='${i+1}']`)</span>
+                                <span list-item=3>listItems[i].addEventListener("mouseover", event => {
+                                    
+                                    for(let i = 0; i < allSpans.length; i++){
+                                        allSpans[i].className = "highlighted"
+                                    }
+                                })
+                
+                                listItems[i].addEventListener("mouseout", () => {
+                                    for(let i = 0; i < allSpans.length; i++){
+                                        allSpans[i].className = ""
+                                    }
+                                })</span>
+                            }
                         }
-            
-                    }
-                </code>
-                <ul>
-                    <li>Check for notations, some examples may not have them</li>
-                    <li>Get all the spans in the code section that correlate with the list index</li>
-                    <li>Add mouse events to each list item and pass all the associated span elements</li>
-                </ul>
+                    </code>
+                    <ul>
+                        <li>Check for notations, some examples may not have them</li>
+                        <li>Get all the spans in the code section that correlate with the list index</li>
+                        <li>Add mouse events to each list item and pass all the associated span elements</li>
+                    </ul>
+                </div>
             </div>
         </blogpost>
     </div>
@@ -187,6 +192,7 @@
     <div include-html="partials/footer.html"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="./src/Utilities.js" ></script>
     <script type="text/javascript" src="./src/components/Component.js" ></script>
     <script type="text/javascript" src="./src/components/Navbar.js" ></script>
     <script type="text/javascript" src="./src/components/CodeNotation.js" ></script>

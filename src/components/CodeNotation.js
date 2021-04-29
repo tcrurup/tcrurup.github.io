@@ -2,10 +2,18 @@ document.addEventListener("DOMContentLoaded", event => {
     let allNodes = document.querySelectorAll("div.code-notation")
     for(let i=0; i < allNodes.length; i++){
         const node = allNodes[i];
+
+        const title = (node.getAttribute('name') || "No name given").split('-').map(n => Utilities.capitalize(n)).join(" ");
+        const titleElement = document.createElement('div')
+        titleElement.innerHTML = title
+        titleElement.className="code-notation-title"
+        node.prepend(titleElement);
         const code = node.querySelector("code")
         const notationUL = node.querySelector("ul")
         
         const sanitizedCode = sanitizeCode(code.innerHTML)
+        
+        
         code.innerHTML = sanitizedCode
         
         //Add event on mouse over to change span class in code
@@ -53,11 +61,18 @@ document.addEventListener("DOMContentLoaded", event => {
             increaseIndent = indentPlusCharacters.includes(finalChar);
             decreaseIndent = indentMinusCharacters.includes(firstChar) || indentMinusCharacters.includes(finalChar);
 
+            //If both are true then it should cancel eachother out.  It's important to do this here because of the order of operations when it comes
+            //to adding the indent
+            if(increaseIndent && decreaseIndent){ decreaseIndent = false; increaseIndent = false}
+            
             decreaseIndent ? indents-- : null
             for(let i=0; i< indents; i++){ string = "    " + string }
+            console.log(indents)
             increaseIndent ? indents++ : null
+            
             return string;            
         })
+        sanitizedStrings.unshift('')
         return sanitizedStrings.join('\n')
     }
 })
