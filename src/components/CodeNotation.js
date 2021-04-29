@@ -6,28 +6,45 @@ class CodeNotation{
         }
         Object.freeze(this.properties)
         this.prependTitleToElement()
-        this.codeElement.innerHTML = CodeNotation.sanitizeCode(this.codeElement.innerHTML)
-        if(this.notationElement){
-            const listItems = this.notationElement.querySelectorAll('li')
-            
-            for(let i = 0; i < listItems.length; i++){
-                const allSpans = this.codeElement.querySelectorAll(`span[list-item='${i+1}']`)
-                listItems[i].addEventListener("mouseover", event => {
-                    
-                    for(let i = 0; i < allSpans.length; i++){
-                        allSpans[i].className = "highlighted"
-                    }
-                })
-                listItems[i].addEventListener("mouseout", () => {
-                    for(let i = 0; i < allSpans.length; i++){
-                        allSpans[i].className = ""
-                    }
-                })
-            }
+        this.codeText = this.sanitizedCode
+        this.initializeEventListeners()        
+    }
+    
+    get codeElement(){ return this.node.querySelector('code')}
+    get node(){ return this.properties.node }
+    get notationElement(){ return this.node.querySelector('ul')}
+    get sanitizedCode(){ return CodeNotation.sanitizeCode(this.codeElement.innerHTML)}
+    get title(){ return (this.node.getAttribute('name') || "No name provided").split('-').map(n => Utilities.capitalize(n)).join(" ")}
 
+    set codeText(codeText){ this.codeElement.innerHTML = codeText }
+
+    allNotationListItems(){ return this.notationElement.querySelectorAll('li') }
+    getCodeElementSpansByIndex(index){ return this.codeElement.querySelectorAll(`span[list-item='${index}']`)}
+    
+    initializeEventListeners(){  
+        if(this.notationElement){
+            const notationListItems = this.allNotationListItems() 
+            for(let i = 0; i < notationListItems.length; i++){
+                const allSpans = this.getCodeElementSpansByIndex(i+1)
+                notationListItems[i].addEventListener("mouseover", event => this.setClassNameForNodeList(allSpans, "highlighted"))
+                notationListItems[i].addEventListener("mouseout", event => this.setClassNameForNodeList(allSpans, ""))
+            }
         }
     }
+    
+    prependTitleToElement(){
+        const titleElement = document.createElement('div')
+        titleElement.innerHTML = this.title
+        titleElement.className="code-notation-title"
+        this.node.prepend(titleElement);
+    }
 
+    setClassNameForNodeList(nodeList, className){
+        for(let i = 0; i < nodeList.length; i++){
+            nodeList[i].className = className
+        }
+    }
+    
     static sanitizeCode(innerHTML){
         const splitString = innerHTML.split(/\n/g);
         const cleanedStrings = splitString.map(line => line.trim()).filter(line=> line != "");
@@ -57,21 +74,6 @@ class CodeNotation{
         })
         sanitizedStrings.unshift('')
         return sanitizedStrings.join('\n')
-    }
-    
-    prependTitleToElement(){
-        const titleElement = document.createElement('div')
-        titleElement.innerHTML = this.title
-        titleElement.className="code-notation-title"
-        this.node.prepend(titleElement);
-    }
-
-    get codeElement(){ return this.node.querySelector('code')}
-    get notationElement(){ return this.node.querySelector('ul')}
-    get node(){ return this.properties.node }
-    get title(){
-        const title = this.node.getAttribute('name') || "No name provided"
-        return title.split('-').map(n => Utilities.capitalize(n)).join(" ");
     }
 }
 
