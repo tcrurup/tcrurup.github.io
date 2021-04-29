@@ -1,3 +1,5 @@
+import Utilities from '../Utilities.js'
+
 class CodeNotation{
     
     constructor(node){
