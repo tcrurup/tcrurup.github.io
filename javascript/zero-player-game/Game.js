@@ -3,11 +3,21 @@ import Cell from "./Cell.js";
 class Game{
 
     constructor(parentElement, width = 10, height = 10){
+        //this._gameMap = new GameMap(parentElement, width, height)
         this.height = height;
         this.width = width;
         this.cells = this.#createCells(width, height)
         this.canvas = this.#createCanvas(parentElement);
+        this.#generateCellTerrain();
         this.#draw();
+    }
+
+    #generateCellTerrain(){
+        for(let i=0; i< 10000; i++){
+            let y = Math.floor( Math.random() * (this.width - 1) )
+            let x = Math.floor( Math.random() * (this.height - 1) )
+            this.cells[x][y].changeHeight(4)
+        }
     }
 
     #draw(){
