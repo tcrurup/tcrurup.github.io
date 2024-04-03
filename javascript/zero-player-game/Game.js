@@ -23,6 +23,7 @@ class Game{
     }
 
     onClick(){
+        //MAINLY FOR TESTING RIGHT NOW
         console.log("clicked")
         this._gameMap.generateCellTerrain();
         this.gameLoop()

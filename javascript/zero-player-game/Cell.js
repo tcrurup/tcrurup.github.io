@@ -1,3 +1,5 @@
+import Utilities from "./Utilities.js";
+
 class Cell{
 
     constructor(x, y){
@@ -8,7 +10,7 @@ class Cell{
         this.alpha = 1.0;
         this.maxHeight = 100;
         this.minHeight = -100;
-        this.minLightness = 20;
+        this.minLightness = 10;
         this.maxLightness = 80;
         this.height = 0;
     }
@@ -17,7 +19,7 @@ class Cell{
         this._height = newHeight;
         const lightRange = this.maxLightness - this.minLightness;
         const lightPercent = (newHeight - this.minHeight) / (this.maxHeight - this.minHeight);
-        this.lightness = lightRange * lightPercent;
+        this.lightness = Utilities.clamp(lightRange * lightPercent, this.minLightness, this.maxLightness);
     }
 
     get height(){ return this._height}
