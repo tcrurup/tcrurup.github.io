@@ -12,7 +12,7 @@ class Cell{
         this.maxLightness = 80;
         this.height = 0;
     }
-
+    
     set height(newHeight){
         this._height = newHeight;
         const lightRange = this.maxLightness - this.minLightness;
