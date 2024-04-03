@@ -11,18 +11,37 @@ class GameMap{
         this._cells = this.createCells(width, height)
         this._canvas = this.#createCanvas(parentElement);
         this._mapEvents = new MapEvents(this._cells);
+        this._currentEvents = [];
         this.updated = false;
+        this._canvas.height = this._height * this.pixelSize;
+        this._canvas.width = this._width * this.pixelSize;
         this.generateCellTerrain();
     }
 
     get mapEvents(){ return this._mapEvents }
+    get cellCollection(){ return [...this._cells] }
+    get mapWidth(){ return this._width }
+    get mapHeight(){ return this._height }
+    get pixelSize(){ return 4 } 
+
+    addCurrentEvent(event){
+        event.map = this
+        this._currentEvents.push(event)
+    }
+
+    stepThroughEvents(){
+        this._currentEvents.forEach(event => event.step())
+    }
+
+    highlightCoordArray(array){
+        array.forEach( coordSet => this.getCellAt(coordSet[0], coordSet[1]).hue = 10 )
+    }
 
     draw(){
-        const CELL_SIZE_PIXELS = 10;
-        this._canvas.height = this._height * CELL_SIZE_PIXELS;
-        this._canvas.width = this._width * CELL_SIZE_PIXELS;
+
+        
         let context = this._canvas.getContext("2d")
-        this._cells.forEach( cell => cell.draw(context, CELL_SIZE_PIXELS) )
+        this._cells.filter(cell => cell.hasUpdated ).forEach( cell => cell.draw(context, this.pixelSize) )
         this.updated = false
     }
 
@@ -49,6 +68,10 @@ class GameMap{
             }
         }
         return cells
+    }
+
+    getCellAt(x, y){
+        return this._cells.find( cell => cell.x == x && cell.y ==y)
     }
 }
 export default GameMap
