@@ -9,8 +9,8 @@ class GameMap{
         this._width = width;
         this._height = height;
         this._cells = this.createCells(width, height)
-        this._canvas = this.#createCanvas(parentElement);
-        this._mapEvents = new MapEvents(this._cells);
+        this._canvas = this.createCanvas(parentElement);
+        this._mapEvents = new MapEvents(this._cells); //Maybe get rid of this later on
         this._currentEvents = [];
         this.updated = false;
         this._canvas.height = this._height * this.pixelSize;
@@ -38,8 +38,6 @@ class GameMap{
     }
 
     draw(){
-
-        
         let context = this._canvas.getContext("2d")
         this._cells.filter(cell => cell.hasUpdated ).forEach( cell => cell.draw(context, this.pixelSize) )
         this.updated = false
@@ -54,7 +52,7 @@ class GameMap{
         this.updated = true;
     }
 
-    #createCanvas(parentElement){
+    createCanvas(parentElement){
         let canvas = document.createElement('canvas')
         parentElement.appendChild(canvas)
         return canvas

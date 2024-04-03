@@ -17,12 +17,10 @@ class Game{
 
     gameLoop(){
         if(this._gameMap.updated){
-            //iterate through the next step of the engine
             this._gameEngine.step();
             this._gameMap.draw();
-            console.log()
-            window.requestAnimationFrame(this.gameLoop.bind(this))
         }
+        window.requestAnimationFrame(this.gameLoop.bind(this))
     }
 
     onClick(){
