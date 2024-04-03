@@ -1,5 +1,6 @@
 import Cell from "./Cell.js";
 import CellSelector from "./CellSelector.js";
+import MapEvents from "./MapEvents/MapEvents.js";
 
 class GameMap{
 
@@ -9,6 +10,7 @@ class GameMap{
         this._height = height;
         this._cells = this.createCells(width, height)
         this._canvas = this.#createCanvas(parentElement);
+        this._mapEvents = new MapEvents(this._cells);
         this.generateCellTerrain();
     }
 
@@ -21,15 +23,11 @@ class GameMap{
     }
 
     generateCellTerrain(){
-        for(let i=0; i< 100; i++){
+        for(let i=0; i< 600; i++){
             let y = Math.floor( Math.random() * (this._height - 1) )
             let x = Math.floor( Math.random() * (this._width - 1) )
-            this.createMeteorImpact(x, y, 10, -5)
+            this._mapEvents.createAsteroidImpact(x, y, 10, -2)
         }
-    }
-
-    createMeteorImpact(x, y, radius, magnitude){
-        CellSelector.circle(this._cells, x, y, radius).forEach(cell => cell.changeHeight(magnitude))
     }
 
     #createCanvas(parentElement){
