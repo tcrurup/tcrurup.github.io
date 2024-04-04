@@ -33,6 +33,14 @@ class GameMap{
         this._currentEvents.forEach(event => event.step())
     }
 
+    changeRadiusAroundCoordArray(coordArray){
+        //Get array of existing cells
+        //Check existing cells agsint coord array, if any are within distance then stop and 
+        //Go through coordArray and get any from existing cells that fit and then remove from esisting cell array
+
+        console.log("raising around coords")
+    }
+
     highlightCoordArray(array){
         array.forEach( coordSet => this.getCellAt(coordSet[0], coordSet[1]).hue = 10 )
     }

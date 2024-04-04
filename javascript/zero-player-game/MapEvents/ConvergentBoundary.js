@@ -1,20 +1,19 @@
+import CoordinateCollection from "../CoordinateCollection.js";
+
 class ConvergentBoundary{
 
-    constructor(x, y, majorAxisPull = .4, minorAxisPull = .6){
+    constructor(x, y, majorAxisPull = .3, minorAxisPull = .7){
         this._x = x;
         this._y = y;
-        this._path = [];
+        this._path = new CoordinateCollection()
         this.majorAxis;
         this.mainAxis=[0, 0]
         this._majorAxisPull = majorAxisPull
         this._minorAxisPull = minorAxisPull
         this._directionInfluence = this.getPathDirectionInfluence(x, y)
-        this.previousPathAxis;
         this.previousPathDelta;
-        this.previousMinorPathDelta;
         this.minorPathBuffer = 0;
         this._calculating = false;
-        console.log("Convergent Boundary Created")
     }
 
     set map(newMap){ 
@@ -30,7 +29,7 @@ class ConvergentBoundary{
     get yPosChance(){ return this.yPosInfluence / (this.yPosInfluence + this.yNegInfluence) }
     get xDelta(){ return Math.random() < this.xPosChance ? 1 : -1 }
     get yDelta(){ return Math.random() < this.yPosChance ? 1 : -1 }
-    get recentPathEntry(){ return this._path[this._path.length-1] }
+    get recentPathEntry(){ return this._path.mostRecent }
     get recentPathX(){ return this.recentPathEntry[0] }
     get recentPathY(){ return this.recentPathEntry[1] }
     
@@ -43,21 +42,17 @@ class ConvergentBoundary{
 
         //check if there is a movement buffer action to be taken, if so then just execute that
         if(this.minorPathBuffer > 0){
-            console.log("Buffering path")
             x += this.mainAxis[0]
             y += this.mainAxis[1]
             this.minorPathBuffer--
         } else {
             //Find where the program wants to randomly move the piece
             if(Math.random() < this._directionInfluence[0] + this._directionInfluence[1] ){
-                console.log(this.mainAxis)
                 //Indicates a change in the x axis
                 let delta = 0;
                 if(this.mainAxis[0] != 0){
-                    console.log("Increaseing boundary along Major X axis")
                     //This is a change on the x and it's the main axis so automatically advance
                     delta += this.mainAxis[0]
-                    console.log(this.previousPathDelta)
                     if(this.previousPathDelta[1] != 0){
                         this.minorPathBuffer+=1;
                     }
@@ -73,7 +68,6 @@ class ConvergentBoundary{
                 this.previousPathDelta = [delta, 0]
                 x += delta
             } else {
-                console.log("Increaseing boundary along Y axis")
                 //Indicates a change in the y axis
                 let delta = 0;
                 if(this.mainAxis[1] != 0){
@@ -96,9 +90,9 @@ class ConvergentBoundary{
                 y += delta
             }
         }
-        
+
         if(this.coordsAreInBounds(x, y)){
-            this._path.push([x, y])
+            this._path.addCoordinates([x, y])
         } else {
             this._calculating = false
         }
@@ -131,13 +125,14 @@ class ConvergentBoundary{
     }
 
     calculatePath(){
-        this._path.push([this._x,this._y])
+        this._path.addCoordinates([this._x,this._y])
         this.advancePath()
         this._calculating = true;
         while(this._calculating){
             this.advancePath();
         }
-        this._map.highlightCoordArray(this._path);
+        this._map.highlightCoordArray(this._path.collection);
+        this._map.changeRadiusAroundCoordArray(this._path.collection)
     }
 
     step(){
