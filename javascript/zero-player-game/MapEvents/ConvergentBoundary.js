@@ -38,13 +38,12 @@ class ConvergentBoundary extends MapEvent{
     get mapWidth(){ return this._map.mapWidth }
 
     coordsInRange(range){
-
-        let outArray = new CoordinateCollection()
-        
         this.collection.forEach(xyPair => {    
-            this._map.getCellsWithinRadius(xyPair[0], xyPair[1], 4)
+            this._map.getCellsWithinRadius(xyPair[0], xyPair[1], range).forEach(cell => cell.changeHeight(50, 1))
         })   
     }
+
+
 
     normalizeCoordsAlongX(range){
         let outArray = []
@@ -164,13 +163,17 @@ class ConvergentBoundary extends MapEvent{
 
     calculatePath(){
         this.addCoordinates([this._x,this._y])
-        this._map.highlightCoordArray(this.collection, 50);
+        this.advancePath()
+        this._calculating = true;
+        while(this._calculating){
+            this.advancePath();
+        }
+        this.coordsInRange(4);
+        this._map.updated = true;
     }
 
     step(){
-        this.advancePath();
-        this._map.updated = true;
-        this._map.highlightCoordArray(this.collection, 50);
+        
     }
 }
 

@@ -8,6 +8,7 @@ class Cell{
         this._hue = 108;
         this.saturation = 50;
         this.alpha = 1.0;
+        this._targetHeight = 0;
         this.maxHeight = 100;
         this.minHeight = -100;
         this.minLightness = 10;
@@ -31,14 +32,21 @@ class Cell{
         this._hue = newHue;
         this._updated = true;
     }
+    set updated(bool){ this._updated = bool }
 
-    changeHeight(amount){ 
-        this.height = this.height + amount; 
+    changeHeight(amount, delta){ 
+        this._targetHeight = this.height + amount
+        this._heightDelta = delta
         this._updated = true;
+    }
+
+    step(){
+        this.height = this.height + this._heightDelta; 
     }
 
 
     draw(context, cellSize){
+        
         context.fillStyle = this.fillStyle
         context.fillRect(
             this.x*cellSize, 
@@ -54,7 +62,16 @@ class Cell{
             cellSize, 
             cellSize
         )
-        this._updated = false;
+        if(this.isUpToDate()){
+            this._updated = false;
+        } else {
+        }
+        
+    }
+
+    isUpToDate(){
+        if(this._height >= this._targetHeight){ return true}
+        else { return false }
     }
 }
 

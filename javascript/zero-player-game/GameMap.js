@@ -12,6 +12,7 @@ class GameMap{
         this._cells = this.createCells(width, height)
         this._canvas = this.createCanvas(parentElement);
         this._mapEvents = new MapEvents(this._cells); //Maybe get rid of this later on
+        this._cellsToUpdate = [];
         this._currentEvents = [];
         this.updated = false;
         this._canvas.height = this._height * this.pixelSize;
@@ -35,10 +36,9 @@ class GameMap{
     }
 
     highlightCoordArray(array, hue){
-        console.log(array)
         array.forEach( coordSet => {
             try {
-                this.getCellAt(coordSet.x, coordSet.y).hue = hue
+                this.getCellAt(coordSet[0], coordSet[1]).hue = hue
             } catch(error){
                 console.log(`Can't find cell to highlight at ${coordSet[0]}, ${coordSet[1]}`)
             }
@@ -47,8 +47,8 @@ class GameMap{
 
     draw(){
         let context = this._canvas.getContext("2d")
+        console.log(`drawgin ${this._cells._collection.filter(cell => cell.hasUpdated ).length} cells`)
         this._cells._collection.filter(cell => cell.hasUpdated ).forEach( cell => cell.draw(context, this.pixelSize) )
-        this.updated = false
     }
 
     generateCellTerrain(){
@@ -57,6 +57,7 @@ class GameMap{
             let x = Math.floor( Math.random() * (this._width - 1) )
             this._mapEvents.createAsteroidImpact(x, y, 10, -2)
         }
+        this.draw()
         this.updated = true;
     }
 
@@ -81,14 +82,15 @@ class GameMap{
         return new CoordinateCollection(cells)
     }
 
+    stepThroughCells(){
+        this._cells.filter(cell => cell.hasUpdated == true).forEach(cell => cell.step())
+    }
+
     getCellsWithinRadius(x, y, radius){
         return CellSelector.circle(this._cells.collection, x, y, radius)
     }
 
     getCellAt(x, y){
-        console.log("searching for cells")
-        console.log(x)
-        console.log(y)
         return this._cells._collection.find( cell => cell.x == x && cell.y ==y)
     }
 }

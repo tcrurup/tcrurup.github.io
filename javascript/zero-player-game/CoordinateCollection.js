@@ -13,6 +13,10 @@ class CoordinateCollection{
             this._collection.push(newCoords)
         }
     }
+
+    filter(criteria){
+        return this._collection.filter(criteria)
+    }
     
     get collection(){ return this._collection }
     get mostRecent(){ return this._collection[this._collection.length - 1] }
