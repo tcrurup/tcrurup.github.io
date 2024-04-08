@@ -17,7 +17,6 @@ class Game{
 
     gameLoop(){
         if(this._gameMap.updated){
-            this._gameEngine.step();
             this._gameMap.draw();
         }
         window.requestAnimationFrame(this.gameLoop.bind(this))
@@ -26,7 +25,7 @@ class Game{
     onClick(){
         //MAINLY FOR TESTING RIGHT NOW
         console.log("clicked")
-        this._gameMap.generateCellTerrain();
+        this._gameEngine.step();
         this.gameLoop()
     }
 }

@@ -5,7 +5,7 @@ class CoordinateCollection{
     }
 
     setCoordinates(coordArray){ this._collection = coordArray }
-    addCoordinates(coords){ this._collection.push(coords) }
+    addCoordinates(coords){ this.push(coords) }
 
     push(newCoords){
         const existing = this._collection.filter(coord => coord[0] == newCoords[0]).find(matchedXCoords => matchedXCoords[1] == newCoords[1])

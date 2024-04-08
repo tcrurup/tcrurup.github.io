@@ -8,6 +8,7 @@ class GameEngine{
     }
     
     step(){
+        console.log("stepping through engine")
         this._gameMap.stepThroughEvents()
     }
 }

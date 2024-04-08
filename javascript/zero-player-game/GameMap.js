@@ -1,5 +1,6 @@
 import Cell from "./Cell.js";
 import CellSelector from "./CellSelector.js";
+import CoordinateCollection from "./CoordinateCollection.js";
 import MapEvents from "./MapEvents/MapEvents.js";
 
 class GameMap{
@@ -33,21 +34,20 @@ class GameMap{
         this._currentEvents.forEach(event => event.step())
     }
 
-    changeRadiusAroundCoordArray(coordArray){
-        //Get array of existing cells
-        //Check existing cells agsint coord array, if any are within distance then stop and 
-        //Go through coordArray and get any from existing cells that fit and then remove from esisting cell array
-
-        console.log("raising around coords")
-    }
-
     highlightCoordArray(array, hue){
-        array.forEach( coordSet => this.getCellAt(coordSet[0], coordSet[1]).hue = hue )
+        console.log(array)
+        array.forEach( coordSet => {
+            try {
+                this.getCellAt(coordSet.x, coordSet.y).hue = hue
+            } catch(error){
+                console.log(`Can't find cell to highlight at ${coordSet[0]}, ${coordSet[1]}`)
+            }
+        })
     }
 
     draw(){
         let context = this._canvas.getContext("2d")
-        this._cells.filter(cell => cell.hasUpdated ).forEach( cell => cell.draw(context, this.pixelSize) )
+        this._cells._collection.filter(cell => cell.hasUpdated ).forEach( cell => cell.draw(context, this.pixelSize) )
         this.updated = false
     }
 
@@ -78,11 +78,18 @@ class GameMap{
                 cells.push(new Cell(x, y))
             }
         }
-        return cells
+        return new CoordinateCollection(cells)
+    }
+
+    getCellsWithinRadius(x, y, radius){
+        return CellSelector.circle(this._cells.collection, x, y, radius)
     }
 
     getCellAt(x, y){
-        return this._cells.find( cell => cell.x == x && cell.y ==y)
+        console.log("searching for cells")
+        console.log(x)
+        console.log(y)
+        return this._cells._collection.find( cell => cell.x == x && cell.y ==y)
     }
 }
 export default GameMap

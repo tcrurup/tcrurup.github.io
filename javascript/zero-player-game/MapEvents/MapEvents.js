@@ -7,7 +7,7 @@ class MapEvents{
     }
 
     createAsteroidImpact(x, y, radius, magnitude){
-        CellSelector.circle(this._cellCollection, x, y, radius).forEach(cell => cell.changeHeight(magnitude))
+        CellSelector.circle(this._cellCollection.collection, x, y, radius).forEach(cell => cell.changeHeight(magnitude))
     }
     
 }
