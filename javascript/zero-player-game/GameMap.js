@@ -41,8 +41,8 @@ class GameMap{
         console.log("raising around coords")
     }
 
-    highlightCoordArray(array){
-        array.forEach( coordSet => this.getCellAt(coordSet[0], coordSet[1]).hue = 10 )
+    highlightCoordArray(array, hue){
+        array.forEach( coordSet => this.getCellAt(coordSet[0], coordSet[1]).hue = hue )
     }
 
     draw(){
@@ -58,6 +58,11 @@ class GameMap{
             this._mapEvents.createAsteroidImpact(x, y, 10, -2)
         }
         this.updated = true;
+    }
+
+    cellsInRectangle(minX, maxX, minY, maxY){
+        console.log(`getting cells in rectangle ${minX} ${maxX} ${minY} ${maxY}`)
+        return this._cells.filter(cell => { return cell.x >= minX && cell.x <= maxX && cell.y >= minY && cell.y <= maxY })
     }
 
     createCanvas(parentElement){
