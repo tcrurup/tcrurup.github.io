@@ -2,3 +2,10 @@ canvas{
     height: auto;
     width: auto;
 }
+
+nav{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+
+}
