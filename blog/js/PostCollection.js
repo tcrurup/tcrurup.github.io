@@ -12,6 +12,8 @@ class PostCollection{
         return this._posts[index].content
     }
 
+    get length(){ return this._posts.length }
+
 
 }
 

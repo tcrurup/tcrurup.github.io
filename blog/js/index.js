@@ -1,4 +1,5 @@
 import PostCollection from "./PostCollection.js";
+import PostViewer from "./PostViewer.js";
 
 addEventListener("DOMContentLoaded", (event) => {
     getBlogPosts();
@@ -14,7 +15,7 @@ const getBlogPosts = () => {
 }
 
 const createPostElements = (posts) => {
-    let postCollection= new PostCollection(posts)
-    postCollection.allPosts.forEach(post => document.body.append(post.element))
+    let postViewer = new PostViewer(posts)
+    //postCollection.allPosts.forEach(post => document.body.append(post.element))
     
 }
