@@ -1,3 +1,5 @@
+import PostCollection from "./PostCollection.js";
+
 addEventListener("DOMContentLoaded", (event) => {
     getBlogPosts();
 });
@@ -12,12 +14,7 @@ const getBlogPosts = () => {
 }
 
 const createPostElements = (posts) => {
-    posts.forEach(post => {
-        console.log(post.content)
-        let postElement = document.createElement("div")
-        postElement.className = "blog-post"
-        postElement.innerHTML = post.content.rendered
-        document.body.append(postElement)
-    })
+    let postCollection= new PostCollection(posts)
+    postCollection.allPosts.forEach(post => document.body.append(post.element))
     
 }
