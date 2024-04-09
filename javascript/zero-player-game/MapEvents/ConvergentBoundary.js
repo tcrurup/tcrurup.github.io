@@ -1,21 +1,20 @@
-import CoordinateCollection from "../CoordinateCollection.js";
-import Utilities from "../Utilities.js";
-import MapEvent from "./MapEvent.js";
 
-class ConvergentBoundary extends MapEvent{
-
-    constructor(x, y, majorAxisPull = .3, minorAxisPull = .7){
+import MapEvent from "./MapEvent.js";class ConvergentBoundary extends MapEvent{
+    
+    constructor(x, y, radius, majorAxisPull = .3, minorAxisPull = .7){
         super()
         this._x = x;
         this._y = y;
+        this._radius= radius;
         this.mainAxis=[0, 0]
         this._majorAxisPull = majorAxisPull
         this._minorAxisPull = minorAxisPull
         this._directionInfluence = this.getPathDirectionInfluence(x, y)
         this.previousPathDelta;
         this.minorPathBuffer = 0;
+        this._frameNum = 0;
+        this._framesToExecute = 20;
         this._calculating = false;
-        return this
     }
 
     set map(newMap){ 
@@ -33,41 +32,27 @@ class ConvergentBoundary extends MapEvent{
     get yDelta(){ return Math.random() < this.southChance ? 1 : -1 }
     get recentPathX(){ return this.mostRecent[0] }
     get recentPathY(){ return this.mostRecent[1] }
-    get majorAxis(){ return this.mainAxis[0] != 0 ? 'x' : this.mainAxis[1] !=0 ? "y" : "none"}
-    get path(){ return this.collection }
     get mapHeight(){ return this._map.mapHeight }
     get mapWidth(){ return this._map.mapWidth }
 
-    coordsInRange(range){
+    coordsInRange(range, magnitude){
         this.collection.forEach(xyPair => {    
-            this._map.getCellsWithinRadius(xyPair[0], xyPair[1], range).forEach(cell => cell.changeHeight(50, 1))
+            const x = xyPair[0]
+            const y = xyPair[1]
+            this._map.getCellsWithinRadius(x, y, range).forEach(cell => {
+                const cellDistance = cell.distanceFromXY(x,y)
+                
+                let targetHeight 
+                if(cellDistance != 0){
+                    targetHeight = magnitude*(this._radius/cellDistance) + cell.height
+                } else {
+                    targetHeight = magnitude + cell.height
+                }
+                cell.setTargetHeightIfGreater(targetHeight, 20)
+            })
         })   
     }
 
-
-
-    normalizeCoordsAlongX(range){
-        let outArray = []
-        this.path.forEach(coord => {
-            let index = -1
-            for(let i=0; i<outArray.length; i++){
-                if(outArray[i][0] == coord[0]){
-                    index = i;
-                    break;
-                }
-            }
-
-            if(index == -1){
-                outArray.push([coord[0], coord[1], coord[1]])
-            } else {
-                let existing = outArray[index]
-                if(coord[1] < existing[1]){existing [1] = coord[1]}
-                if(coord[1] > existing[2]){existing[2] = coord[1]}
-            }
-        })
-        return outArray
-    }
-    
     advancePathAlongMainAxis(){
         this.addCoordinates([this.recentPathX + this.mainAxis[0], this.recentPathY + this.mainAxis[1]])
     }
@@ -169,7 +154,7 @@ class ConvergentBoundary extends MapEvent{
         while(this._calculating){
             this.advancePath();
         }
-        this.coordsInRange(10);
+        this.coordsInRange(10, 10);
         this._map.updated = true;
     }
 

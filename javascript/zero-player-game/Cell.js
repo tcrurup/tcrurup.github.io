@@ -32,16 +32,27 @@ class Cell{
         this._hue = newHue;
         this._updated = true;
     }
-    set updated(bool){ this._updated = bool }
 
-    changeHeight(amount, delta){ 
-        this._targetHeight = this.height + amount
-        this._heightDelta = delta
-        this._updated = true;
-    }
+    set updated(bool){ this._updated = bool }
 
     step(){
         this.height = this.height + this._heightDelta; 
+
+    }
+
+    distanceFromXY(x, y){
+        return Utilities.getDistanceBetweenXYPoints(this.x, this.y, x, y)
+    }
+
+    setTargetHeight(newHeight, numFrames){
+        this._targetHeight = newHeight;
+        this._heightDelta = (newHeight - this.height) / numFrames;
+    }
+
+    setTargetHeightIfGreater(newTarget, numFrames){
+        if(newTarget > this._targetHeight){
+            this.setTargetHeight(newTarget, numFrames)
+        }
     }
 
 
@@ -70,8 +81,11 @@ class Cell{
     }
 
     isUpToDate(){
-        if(this._height >= this._targetHeight){ return true}
-        else { return false }
+        if(Math.abs(this.height - this._targetHeight) < .1){ 
+            return true
+        } else {
+            return false 
+        }
     }
 }
 

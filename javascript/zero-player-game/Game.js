@@ -16,7 +16,7 @@ class Game{
     }
 
     initialize(){
-        this.addGameEvent(new ConvergentBoundary(0, 90))
+        this.addGameEvent(new ConvergentBoundary(0, 90, 10))
         this.drawMap()
         window.requestAnimationFrame(this.gameLoop.bind(this));
     }
