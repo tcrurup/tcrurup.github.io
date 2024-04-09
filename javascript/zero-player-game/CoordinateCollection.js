@@ -1,11 +1,29 @@
+import Cell from "./Cell.js";
+
 class CoordinateCollection{
 
-    constructor(collection = []){
+    constructor(collection = [], width, height){
         this._collection = collection;
+        this._width = width;
+        this._height = height;
+    }
+
+    get height(){return this._height}
+    get width(){return this._width}
+
+    static create2DCollection(width, height){
+        let cells = []
+        for(let y=0; y<height; y++){
+            for(let x=0; x<width; x++){
+                cells.push(new Cell(x, y))
+            }
+        }
+        return new CoordinateCollection(cells, width, height)
     }
 
     setCoordinates(coordArray){ this._collection = coordArray }
     addCoordinates(coords){ this.push(coords) }
+    get updatedCells(){ return this._collection.filter( cell => cell.hasUpdated )}
 
     push(newCoords){
         const existing = this._collection.filter(coord => coord[0] == newCoords[0]).find(matchedXCoords => matchedXCoords[1] == newCoords[1])

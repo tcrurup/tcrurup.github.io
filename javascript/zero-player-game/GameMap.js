@@ -5,25 +5,23 @@ import MapEvents from "./MapEvents/MapEvents.js";
 
 class GameMap{
 
-    constructor(parentElement, width, height){
+    constructor(parentElement, coordinateCollection){
         this._parentElement = parentElement;
-        this._width = width;
-        this._height = height;
-        this._cells = this.createCells(width, height)
+        this._coordinateCollection = coordinateCollection;
         this._canvas = this.createCanvas(parentElement);
-        this._mapEvents = new MapEvents(this._cells); //Maybe get rid of this later on
+        this._mapEvents = new MapEvents(this._coordinateCollection); //Maybe get rid of this later on
         this._cellsToUpdate = [];
         this._currentEvents = [];
         this.updated = false;
-        this._canvas.height = this._height * this.pixelSize;
-        this._canvas.width = this._width * this.pixelSize;
-        this.generateCellTerrain();
+        this._canvas.height = this.mapHeight * this.pixelSize;
+        this._canvas.width = this.mapWidth * this.pixelSize;
+        //this.generateCellTerrain();
     }
 
     get mapEvents(){ return this._mapEvents }
     get cellCollection(){ return [...this._cells] }
-    get mapWidth(){ return this._width }
-    get mapHeight(){ return this._height }
+    get mapWidth(){ return this._coordinateCollection.width }
+    get mapHeight(){ return this._coordinateCollection.height }
     get pixelSize(){ return 4 } 
 
     addCurrentEvent(event){
@@ -45,10 +43,9 @@ class GameMap{
         })
     }
 
-    draw(){
+    draw(cell){
         let context = this._canvas.getContext("2d")
-        console.log(`drawgin ${this._cells._collection.filter(cell => cell.hasUpdated ).length} cells`)
-        this._cells._collection.filter(cell => cell.hasUpdated ).forEach( cell => cell.draw(context, this.pixelSize) )
+        cell.draw(context, this.pixelSize)
     }
 
     generateCellTerrain(){
@@ -57,12 +54,10 @@ class GameMap{
             let x = Math.floor( Math.random() * (this._width - 1) )
             this._mapEvents.createAsteroidImpact(x, y, 10, -2)
         }
-        this.draw()
         this.updated = true;
     }
 
     cellsInRectangle(minX, maxX, minY, maxY){
-        console.log(`getting cells in rectangle ${minX} ${maxX} ${minY} ${maxY}`)
         return this._cells.filter(cell => { return cell.x >= minX && cell.x <= maxX && cell.y >= minY && cell.y <= maxY })
     }
 
@@ -83,11 +78,11 @@ class GameMap{
     }
 
     stepThroughCells(){
-        this._cells.filter(cell => cell.hasUpdated == true).forEach(cell => cell.step())
+        this._coordinateCollection.filter(cell => cell.hasUpdated == true).forEach(cell => cell.step())
     }
 
     getCellsWithinRadius(x, y, radius){
-        return CellSelector.circle(this._cells.collection, x, y, radius)
+        return CellSelector.circle(this._coordinateCollection, x, y, radius)
     }
 
     getCellAt(x, y){

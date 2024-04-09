@@ -15,6 +15,7 @@ class ConvergentBoundary extends MapEvent{
         this.previousPathDelta;
         this.minorPathBuffer = 0;
         this._calculating = false;
+        return this
     }
 
     set map(newMap){ 
@@ -168,7 +169,7 @@ class ConvergentBoundary extends MapEvent{
         while(this._calculating){
             this.advancePath();
         }
-        this.coordsInRange(4);
+        this.coordsInRange(10);
         this._map.updated = true;
     }
 

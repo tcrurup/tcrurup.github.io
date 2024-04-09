@@ -1,33 +1,53 @@
 import GameMap from "./GameMap.js";
-import GameEngine from "./GameEngine.js";
+import ConvergentBoundary from "./MapEvents/ConvergentBoundary.js";
+import CoordinateCollection from "./CoordinateCollection.js";
+import Cell from "./Cell.js";
 
 class Game{
 
     constructor(parentElement, width = 10, height = 10){
         this._paused = false;
-        this._gameMap = new GameMap(parentElement, width, height) 
-        this._gameEngine = new GameEngine(this._gameMap);
+        this._gameCellCollection = CoordinateCollection.create2DCollection(width, height)
+        this._gameMap = new GameMap(parentElement, this._gameCellCollection) 
+        this._gameEvents = []  
+        this._updated = false;     
+        this._framesPassed = 0; 
         this.initialize()
-        window.addEventListener("click", this.onClick.bind(this))
     }
 
     initialize(){
+        this.addGameEvent(new ConvergentBoundary(0, 90))
+        this.drawMap()
         window.requestAnimationFrame(this.gameLoop.bind(this));
     }
 
+    addGameEvent(newEvent){
+        newEvent.map = this._gameMap
+        this._gameMap.updated = true;
+        this._gameEvents.push(newEvent)
+        this._updated = true
+    }
+
+    stepThroughEvents(){ this._gameEvents.forEach(event => event.step() ) }
+    stepThroughCells(){ this._gameCellCollection.filter(cell => cell.hasUpdated == true).forEach(cell => cell.step()) }
+
     gameLoop(){
-        if(this._gameMap.updated){
-            this._gameEngine.step();
-            this._gameMap.draw();
+        if(this._updated){
+            this.stepThroughEvents()
+            this.stepThroughCells()
+            this.drawMap()
         }
+        this._framesPassed++;
         window.requestAnimationFrame(this.gameLoop.bind(this))
     }
 
-    onClick(){
-        //MAINLY FOR TESTING RIGHT NOW
-        console.log(this._gameMap._cells)
-        this._gameEngine.step();
-        this.gameLoop()
+    drawMap(){
+        const updatedCells = this._gameCellCollection.updatedCells;
+        if(updatedCells.length == 0){
+            this._updated = false
+        } else {
+            updatedCells.forEach( cell => this._gameMap.draw(cell) )
+        }
     }
 }
 
