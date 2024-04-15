@@ -1,5 +1,17 @@
+@font-face {
+    font-family: Roboto;
+    src: url(./Fonts/RobotoCondensed-Regular.ttf);
+}
+
 body{
     margin: 0px;
+    font-family: Roboto;
+}
+
+div#container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh
 }
 
 canvas{
@@ -39,6 +51,7 @@ footer{
     justify-content: space-evenly;
     gap: 20px;
     background-color: rgb(77, 73, 73);    
+    align-self: flex-end;
 }
 
 footer a{
@@ -73,11 +86,15 @@ div#post-viewer div.wp-block-syntaxhighlighter-code{
 
 div#main{
     width: 100vw;
+    height: auto;
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
 }
 
 div#content{
+    display: flex;
+    flex-direction: column;
     width: 80vw;
     text-align: center;
     padding-top: 30px;
@@ -86,6 +103,19 @@ div#content{
 div.side-border{
     display: inline-block;
     width: 10vw;
-    height: 100vh;
+    height: auto;
     background-color: rgb(143, 142, 142);
 }
+
+section{
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    background-color: rgb(184, 144, 221);
+}
+
+section h1{
+    margin: 3px;
+}
+
