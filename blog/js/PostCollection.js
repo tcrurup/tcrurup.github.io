@@ -9,7 +9,7 @@ class PostCollection{
     get allPosts(){ return this._posts }
 
     getPostAtIndex(index){
-        return this._posts[index].content
+        return this._posts[index]
     }
 
     get length(){ return this._posts.length }

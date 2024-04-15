@@ -5,6 +5,7 @@ class PostViewer{
     constructor(postCollection){
         this._postCollection = new PostCollection(postCollection);
         this._currentPostIndex = 0;
+        this.initialize();
         this.addEventListeners()
         this.update();
     }
@@ -12,6 +13,12 @@ class PostViewer{
     get postCount(){return this._postCollection.length}
     get postNum(){ return this._currentPostIndex + 1}
 
+    initialize(){
+        let postViewerElement = document.createElement("div")
+        postViewerElement.id = "post-viewer"
+        document.getElementById("content").append(postViewerElement)
+    }
+    
     goToPostIndex(index){
         this._currentPostIndex = index;
         this.update()
@@ -28,8 +35,8 @@ class PostViewer{
     }
 
     update(){
-        console.log(`updating ${this.postNum}`)
-        document.getElementById("content").innerHTML = this._postCollection.getPostAtIndex(this._currentPostIndex)
+        console.log(this._postCollection.getPostAtIndex(this._currentPostIndex))
+        document.getElementById("post-viewer").innerHTML = this._postCollection.getPostAtIndex(this._currentPostIndex).content
     }
 
     addEventListeners(){

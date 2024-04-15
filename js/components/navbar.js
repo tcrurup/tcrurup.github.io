@@ -28,4 +28,4 @@ const createNavBar = () =>{
 
 
 
-document.body.prepend(createNavBar())
+document.getElementById("container").prepend(createNavBar())
